@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import type { Transaction } from "../App";
+import type { Expense, Income } from "../App";
 
 interface AddTransactionProps {
   onClose: () => void;
-  setTransaction: (transaction: Transaction) => void;
+  setTransaction: (transaction: Expense | Income) => void;
 }
 
 function AddTransaction({ onClose, setTransaction }: AddTransactionProps) {
@@ -13,22 +13,32 @@ function AddTransaction({ onClose, setTransaction }: AddTransactionProps) {
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
+  const [date] = useState(new Date().toISOString().split("T")[0]);
 
   const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();
     if (!type) return;
 
-    const newTransaction: Transaction = {
-      id: Date.now().toString(),
-      text: description || "Untitled",
-      amount: Number(amount) || 0,
-      category: category || "General",
-      date: date,
-      type: type,
-    };
+    if (type=="expense"){
+      const expense: Expense = {
+        id:Date.now().toString(),
+        text:description||"Untitled",
+        amount:Number(amount)||0,
+        category:category||"General",
+        date:date,
+        type:"Expense",
+      };
+      setTransaction(expense);
+    }else{
+      const income: Income = {
+        id:Date.now().toString(),
+        amount:Number(amount)||0,
+        date:date,
+        type:"Income",
+      };
+      setTransaction(income);
+    }
 
-    setTransaction(newTransaction);
     onClose();
   };
 
@@ -60,6 +70,7 @@ function AddTransaction({ onClose, setTransaction }: AddTransactionProps) {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
+                handleSubmit(e);
                 onClose();
               }}
               className="flex flex-col gap-4"
@@ -81,6 +92,7 @@ function AddTransaction({ onClose, setTransaction }: AddTransactionProps) {
                     name="description"
                     className="input input-bordered w-full"
                     placeholder="e.g. Groceries"
+                    onChange={(e) => setDescription(e.target.value)}
                   />
                 </div>
               </div>
@@ -95,6 +107,7 @@ function AddTransaction({ onClose, setTransaction }: AddTransactionProps) {
                   name="amount"
                   className="input input-bordered w-full"
                   placeholder="e.g. 50"
+                  onChange={(e) => setAmount(e.target.value)}
                 />
               </div>
 
@@ -108,6 +121,7 @@ function AddTransaction({ onClose, setTransaction }: AddTransactionProps) {
                   name="category"
                   className="input input-bordered w-full"
                   placeholder="e.g. Groceries"
+                  onChange={(e) => setCategory(e.target.value)}
                 />
               </div>
 
@@ -130,7 +144,7 @@ function AddTransaction({ onClose, setTransaction }: AddTransactionProps) {
         {type === "income" && (
           <div className="modal-action block">
             {/** Income form here */}
-            <form method="dialog">
+            <form method="dialog" onSubmit={handleSubmit}>
               <div className="form-control text-gray-300">{date}</div>
               <div className="form-control mt-4">
                 <label className="label" htmlFor="amount">
@@ -142,17 +156,19 @@ function AddTransaction({ onClose, setTransaction }: AddTransactionProps) {
                   name="amount"
                   className="input input-bordered w-full"
                   placeholder="e.g. 50"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
                 />
               </div>
               <div className="modal-action gap-2">
                 <button
                   type="button"
                   className="btn btn-ghost"
-                  onClick={onClose}
+                  onClick={()=>{onClose()}}
                 >
                   Close
                 </button>
-                <button type="submit" className="btn btn-accent">
+                <button type="submit" className="btn btn-accent" >
                   Save
                 </button>
               </div>
@@ -162,51 +178,5 @@ function AddTransaction({ onClose, setTransaction }: AddTransactionProps) {
       </div>
     </div>
   );
-
-  {
-    /*
-    <div className="modal">
-      <form onSubmit={(e) => { e.preventDefault(); onClose(); }} className="flex flex-col gap-4">
-
-          <div className="form-control text-gray-300">
-            {date}
-          </div>
-
-          <div>
-            <div>
-                <label htmlFor="description">
-                    <span className="label-text text-gray-300">Description</span>
-                </label>
-            </div>
-            <div>
-                <input type="text" id="description" name="description" className="input input-bordered w-full" placeholder="e.g. Groceries" />
-            </div>
-          </div>
-          
-          <div className="form-control">
-            <label className="label" htmlFor="amount">
-              <span className="label-text text-gray-300">Amount</span>
-            </label>
-            <input type="number" id="amount" name="amount" className="input input-bordered w-full" placeholder="e.g. 50" />
-          </div>
-          
-          <div className="form-control">
-            <label className="label" htmlFor="category">
-              <span className="label-text text-gray-300">Category</span>
-            </label>
-            <input type="text" id="category" name="category" className="input input-bordered w-full" placeholder="e.g. Groceries" />
-          </div>
-          
-          <div className="modal-action gap-2">
-            <button type="button" className="btn btn-ghost" onClick={onClose}>
-              Close
-            </button>
-            <button type="submit" className="btn btn-accent">
-              Save
-            </button>
-          </div>
-        </form>
-    </div>*/
-  }
 }
 export default AddTransaction;

@@ -1,5 +1,5 @@
-import React from "react";
 import { FiArrowUp, FiArrowDown } from "react-icons/fi";
+import { MdOutlineSavings } from "react-icons/md";
 
 interface StatsProps {
   income: number;
@@ -7,7 +7,8 @@ interface StatsProps {
 }
 
 
-function Stats({income=1000, expense=2000}: StatsProps) {
+function Stats({income=0, expense=0}: StatsProps) {
+  const balance = income - expense;
   return (
     <div className="card bg-base-100 w-96">
       <div className="card-body">
@@ -32,6 +33,18 @@ function Stats({income=1000, expense=2000}: StatsProps) {
             <div>
               <span className="block text-[11px] text-white/70 leading-none mb-0.5">Income</span>
               <p className="text-sm font-bold leading-tight">${income}</p>
+            </div>
+          </div>
+        </div>
+        {/**Balance pill */}
+        <div className="flex flex-row items-center justify-center">
+          <div className="flex flex-row items-center gap-3 bg-black/60 text-white p-1.5 pl-2.5 pr-6 rounded-full w-fit">
+            <div className="flex items-center justify-center w-9 h-9 rounded-full bg-white/30 text-white">
+              <MdOutlineSavings size={20} />
+            </div>
+            <div>
+              <span className="block text-[11px] text-white/70 leading-none mb-0.5">Balance</span>
+              <p className="text-sm font-bold leading-tight">${balance}</p>
             </div>
           </div>
         </div>
