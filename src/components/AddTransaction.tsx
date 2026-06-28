@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import type { Expense, Income } from "../App";
+import { IoBusOutline, IoFastFoodOutline } from "react-icons/io5";
+import { FaFileInvoiceDollar, FaNewspaper, FaShirt } from "react-icons/fa6";
+import { FaHome, FaRegQuestionCircle, FaShoppingBag } from "react-icons/fa";
 
 interface AddTransactionProps {
   onClose: () => void;
@@ -130,14 +133,14 @@ function AddTransaction({ onClose, setTransaction, editingTransaction }: AddTran
                   onChange={(e) => setCategory(e.target.value)}
                 >
                   <option value="">Select a category</option>
-                  <option value="Groceries">Groceries</option>
-                  <option value="Food">Food</option>
-                  <option value="Transport">Transport</option>
-                  <option value="Utilities">Utilities</option>
-                  <option value="Shopping">Shopping</option>
-                  <option value="Bills">Bills</option>
-                  <option value="Subscription">Subscription</option>
-                  <option value="Other">Other</option>
+                  <option value="Groceries"><FaShoppingBag/>Groceries</option>
+                  <option value="Food"><IoFastFoodOutline size={20}/>Food</option>
+                  <option value="Transport"><IoBusOutline size={20}/>Transport</option>
+                  <option value="Utilities"><FaHome size={20}/>Utilities</option>
+                  <option value="Shopping"><FaShirt size={20}/>Shopping</option>
+                  <option value="Bills"><FaFileInvoiceDollar size={20}/>Bills</option>
+                  <option value="Subscription"><FaNewspaper size={20}/>Subscription</option>
+                  <option value="Other"><FaRegQuestionCircle size={20}/>Other</option>
                 </select>
               </div>
 
