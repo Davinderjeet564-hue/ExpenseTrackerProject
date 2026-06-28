@@ -1,8 +1,6 @@
 import {useState,useEffect} from 'react'
 import { FaMoneyBillAlt } from "react-icons/fa";
-import { MdDarkMode } from "react-icons/md";
-import { CiLight } from "react-icons/ci";
-import { GiCupcake } from "react-icons/gi";
+import { IoIosColorPalette } from "react-icons/io";
 
 const THEMES = ["light", "dark", "cupcake"]
 
@@ -26,9 +24,7 @@ function Header() {
         <div className='flex gap-4'>
             <div className='dropdown dropdown-end'>
                 <button className='btn btn-primary' aria-label={`Theme ${theme}`}>
-                    {theme === "light" && <CiLight size={20}/>}
-                    {theme === "dark" && <MdDarkMode size={20}/>}
-                    {theme === "cupcake" && <GiCupcake size={20}/>}
+                    <IoIosColorPalette size={20}/>
                 </button>
                 <ul tabIndex={0} className='dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52'>
                     {THEMES.map((t) => (
