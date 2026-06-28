@@ -52,13 +52,13 @@ function AddTransaction({ onClose, setTransaction, editingTransaction }: AddTran
         <h3 className="font-bold text-lg">Add Transaction</h3>
         <div className="flex gap-2 p-1">
           <button
-            className="btn flex-1 rounded-full bg-neutral-700 hover:bg-neutral-600 active:bg-neutral-700 focus-visible:bg-neutral-600 focus-visible:outline-neutral-600 focus-visible:outline-offset-2 focus-visible:outline-2"
+            className={`btn flex-1 rounded-full ${type === "expense" ? "btn-neutral" : "btn-outline"}`}
             onClick={() => setType("expense")}
           >
             Expense
           </button>
           <button
-            className="btn flex-1 rounded-full bg-neutral-700 hover:bg-neutral-600 active:bg-neutral-700 focus-visible:bg-neutral-600 focus-visible:outline-neutral-600 focus-visible:outline-offset-2 focus-visible:outline-2"
+            className={`btn flex-1 rounded-full ${type === "income" ? "btn-neutral" : "btn-outline"}`}
             onClick={() => setType("income")}
           >
             Income
@@ -76,12 +76,12 @@ function AddTransaction({ onClose, setTransaction, editingTransaction }: AddTran
               }}
               className="flex flex-col gap-4"
             >
-              <div className="form-control text-gray-300">{date}</div>
+              <div className="form-control opacity-70">{date}</div>
 
               <div>
                 <div>
                   <label htmlFor="description">
-                    <span className="label-text text-gray-300">
+                    <span className="label-text">
                       Description
                     </span>
                   </label>
@@ -101,7 +101,7 @@ function AddTransaction({ onClose, setTransaction, editingTransaction }: AddTran
 
               <div className="form-control">
                 <label className="label" htmlFor="amount">
-                  <span className="label-text text-gray-300">Amount</span>
+                  <span className="label-text">Amount</span>
                 </label>
                 <input
                   type="number"
@@ -116,12 +116,12 @@ function AddTransaction({ onClose, setTransaction, editingTransaction }: AddTran
 
               <div className="form-control">
                 <label className="label" htmlFor="category">
-                  <span className="label-text text-gray-300">Category</span>
+                  <span className="label-text">Category</span>
                 </label>
                 <select
                   id="category"
                   name="category"
-                  className="select select-bordered w-full text-white"
+                  className="select select-bordered w-full"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                 >
@@ -157,10 +157,10 @@ function AddTransaction({ onClose, setTransaction, editingTransaction }: AddTran
           <div className="modal-action block">
             {/** Income form here */}
             <form method="dialog" onSubmit={handleSubmit}>
-              <div className="form-control text-gray-300">{date}</div>
+              <div className="form-control opacity-70">{date}</div>
               <div className="form-control mt-4">
                 <label className="label" htmlFor="amount">
-                  <span className="label-text text-gray-300">Amount</span>
+                  <span className="label-text">Amount</span>
                 </label>
                 <input
                   type="number"

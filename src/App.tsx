@@ -98,7 +98,7 @@ function App() {
   );
 
   return (
-    <>
+    <div className="min-h-screen bg-base-200 text-base-content pb-8">
       <Header />
       <div className="flex flex-row flex-wrap justify-evenly items-center m-4">
         <Stats
@@ -139,7 +139,7 @@ function App() {
         onDelete={deleteExpense}
         onEdit={setEditingExpense}
       />
-    </>
+    </div>
   );
 }
 
