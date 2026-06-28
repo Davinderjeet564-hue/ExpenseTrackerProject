@@ -1,12 +1,46 @@
-import React from 'react'
+import {useState,useEffect} from 'react'
+import { FaMoneyBillAlt } from "react-icons/fa";
+
+const THEMES = ["light", "dark", "cupcake"]
 
 function Header() {
+
+  const [theme, setTheme] = useState<string>(localStorage.getItem("theme") || "dark");
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prevTheme) => {
+      const currentIndex = THEMES.indexOf(prevTheme);
+      const nextIndex = (currentIndex + 1) % THEMES.length;
+      return THEMES[nextIndex];
+    });
+  };
+
+
   return (
-    <header className='flex justify-between rounded-2xl m-4 p-4'>
-        <h1 className='text-white font-bold text-2xl'>Expense Tracker</h1>
+    <header className='flex justify-between m-4 p-4 bg-neutral/30'>
+        <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <FaMoneyBillAlt className="text-white text-xl" />
+            </div>
+            <h1 className='text-white font-bold text-2xl'>Expense Tracker</h1>
+        </div>
         <div className='flex gap-4'>
-            <button className='btn btn-primary'>Change theme</button>
-            <div className='btn btn-secondary'>login</div>
+            <div className='dropdown dropdown-end'>
+                <button className='btn btn-primary'>{theme}</button>
+                <ul tabIndex={0} className='dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52'>
+                    {THEMES.map((t) => (
+                        <li key={t}>
+                            <a onClick={() => setTheme(t)}>{t}</a>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <button className='btn btn-secondary'>login</button>
         </div>
     </header>
   )
