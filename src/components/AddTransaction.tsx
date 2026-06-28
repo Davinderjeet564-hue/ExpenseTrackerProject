@@ -49,21 +49,25 @@ function AddTransaction({ onClose, setTransaction, editingTransaction }: AddTran
       role="dialog"
     >
       <div className="modal-box">
-        <h3 className="font-bold text-lg">Add Transaction</h3>
-        <div className="flex gap-2 p-1">
-          <button
-            className={`btn flex-1 rounded-full ${type === "expense" ? "btn-neutral" : "btn-outline"}`}
-            onClick={() => setType("expense")}
-          >
-            Expense
-          </button>
-          <button
-            className={`btn flex-1 rounded-full ${type === "income" ? "btn-neutral" : "btn-outline"}`}
-            onClick={() => setType("income")}
-          >
-            Income
-          </button>
-        </div>
+        <h3 className="font-bold text-lg">
+          {editingTransaction ? "Update Expense" : "Add Transaction"}
+        </h3>
+        {!editingTransaction && (
+          <div className="flex gap-2 p-1">
+            <button
+              className={`btn flex-1 rounded-full ${type === "expense" ? "btn-neutral" : "btn-outline"}`}
+              onClick={() => setType("expense")}
+            >
+              Expense
+            </button>
+            <button
+              className={`btn flex-1 rounded-full ${type === "income" ? "btn-neutral" : "btn-outline"}`}
+              onClick={() => setType("income")}
+            >
+              Income
+            </button>
+          </div>
+        )}
         {/*If type is expense show expense form */}
         {type === "expense" && (
           <div className="modal-action block">
@@ -146,7 +150,7 @@ function AddTransaction({ onClose, setTransaction, editingTransaction }: AddTran
                   Close
                 </button>
                 <button type="submit" className="btn btn-accent">
-                  Save
+                  {editingTransaction ? "Update" : "Save"}
                 </button>
               </div>
             </form>
@@ -181,7 +185,7 @@ function AddTransaction({ onClose, setTransaction, editingTransaction }: AddTran
                   Close
                 </button>
                 <button type="submit" className="btn btn-accent" >
-                  Save
+                  {editingTransaction ? "Update" : "Save"}
                 </button>
               </div>
             </form>
