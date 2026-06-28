@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import Stats from "./components/Stats";
 import SearchBar from "./components/SearchBar";
 import AddTransaction from "./components/AddTransaction";
+import RecentTransactions from "./components/ShowRecentTransaction";
 
 export interface Expense {
   id: string;
@@ -46,6 +47,7 @@ function App() {
   }
 
   const [showModal, setShowModal] = React.useState(false);
+  const [editingExpense,setEditingExpense] = React.useState<Expense | null>(null);
 
   return (
     <>
@@ -60,6 +62,7 @@ function App() {
       {showModal && (
         <AddTransaction onClose={() => setShowModal(false)} setTransaction={addTransaction} />
       )}
+      <RecentTransactions expense={transactions.expense} />
     </>
   );
 }
