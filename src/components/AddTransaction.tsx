@@ -118,15 +118,23 @@ function AddTransaction({ onClose, setTransaction, editingTransaction }: AddTran
                 <label className="label" htmlFor="category">
                   <span className="label-text text-gray-300">Category</span>
                 </label>
-                <input
-                  type="text"
+                <select
                   id="category"
                   name="category"
-                  className="input input-bordered w-full"
-                  placeholder="e.g. Groceries"
+                  className="select select-bordered w-full text-white"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                />
+                >
+                  <option value="">Select a category</option>
+                  <option value="Groceries">Groceries</option>
+                  <option value="Food">Food</option>
+                  <option value="Transport">Transport</option>
+                  <option value="Utilities">Utilities</option>
+                  <option value="Shopping">Shopping</option>
+                  <option value="Bills">Bills</option>
+                  <option value="Subscription">Subscription</option>
+                  <option value="Other">Other</option>
+                </select>
               </div>
 
               <div className="modal-action gap-2">

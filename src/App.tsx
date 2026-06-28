@@ -64,7 +64,9 @@ function App() {
         return {
           ...prev,
           expense: exists
-            ? prev.expense.map((item) => (item.id === transaction.id ? transaction : item))
+            ? prev.expense.map((item) =>
+                item.id === transaction.id ? transaction : item,
+              )
             : [...prev.expense, transaction],
         };
       } else {
@@ -72,19 +74,27 @@ function App() {
         return {
           ...prev,
           income: exists
-            ? prev.income.map((item) => (item.id === transaction.id ? transaction : item))
+            ? prev.income.map((item) =>
+                item.id === transaction.id ? transaction : item,
+              )
             : [...prev.income, transaction],
         };
       }
     });
     setShowModal(false);
-    setEditingExpense(null)
+    setEditingExpense(null);
   }
-
 
   const [showModal, setShowModal] = React.useState(false);
   const [editingExpense, setEditingExpense] = React.useState<Expense | null>(
     null,
+  );
+  const [searchQuery, setSearchQuery] = React.useState("");
+
+  const filteredExpenses = transactions.expense.filter(
+    (item) =>
+      item.text.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.category.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -101,7 +111,7 @@ function App() {
             0,
           )}
         />
-        <SearchBar />
+        <SearchBar onSearch={setSearchQuery} />
       </div>
       <div className="flex flex-row justify-center items-center m-4">
         <button
@@ -124,7 +134,11 @@ function App() {
           editingTransaction={editingExpense}
         />
       )}
-      <RecentTransactions expense={transactions.expense} onDelete={deleteExpense} onEdit={setEditingExpense} />
+      <RecentTransactions
+        expense={filteredExpenses}
+        onDelete={deleteExpense}
+        onEdit={setEditingExpense}
+      />
     </>
   );
 }

@@ -1,6 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 
-function SearchBar() {
+interface SearchBarProps {
+  onSearch: (query: string) => void;
+}
+
+function SearchBar({ onSearch }: SearchBarProps) {
+  const [query, setQuery] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setQuery(val);
+    onSearch(val);
+  };
+
   return (
     <div className="m-4">
       <label className="input">
@@ -20,7 +32,13 @@ function SearchBar() {
             <path d="m21 21-4.3-4.3"></path>
           </g>
         </svg>
-        <input type="search" placeholder="Search" aria-label="Search for expenses"/>
+        <input
+          type="search"
+          placeholder="Search"
+          aria-label="Search for expenses"
+          value={query}
+          onChange={handleChange}
+        />
       </label>
     </div>
   );
