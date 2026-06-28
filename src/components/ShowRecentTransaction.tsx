@@ -61,7 +61,7 @@ function ShowRecentTransactions({ expense, onDelete, onEdit }: ShowRecentTransac
       <div className="flex-1">
         <h2 className="font-bold text-2xl mb-6 ml-8">Recent Expenses</h2>
         {expense.length === 0 && (
-          <p className="opacity-50 text-center py-8 flex gap-2 items-center justify-center text-xl "><CiNoWaitingSign size={24}/>No expenses yet</p>
+          <p className="opacity-50 text-center py-8 flex gap-2 items-center justify-center text-xl"><CiNoWaitingSign size={24}/>No expenses yet</p>
         )}
         <div className="flex justify-center items-center gap-4 flex-1 flex-wrap">
             {expense.map((transaction) => {

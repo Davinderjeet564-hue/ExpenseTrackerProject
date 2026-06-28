@@ -2,7 +2,7 @@ import {useState,useEffect} from 'react'
 import { FaMoneyBillAlt } from "react-icons/fa";
 import { IoIosColorPalette } from "react-icons/io";
 
-const THEMES = ["light", "dark", "cupcake"]
+const THEMES = ["light", "dark", "cupcake", "dracula", "sunset", "luxury"]
 
 function Header() {
 

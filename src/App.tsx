@@ -4,6 +4,7 @@ import Stats from "./components/Stats";
 import SearchBar from "./components/SearchBar";
 import AddTransaction from "./components/AddTransaction";
 import RecentTransactions from "./components/ShowRecentTransaction";
+import { MdOutlineNoteAdd } from "react-icons/md";
 
 export interface Expense {
   id: string;
@@ -118,7 +119,7 @@ function App() {
           className="btn btn-outline btn-accent active:shadow-lg hover:shadow-lg focus:shadow-lg focus:outline-1 focus:outline-accent outline-offset-2 transition-all duration-200 ease-in-out"
           onClick={() => setShowModal(!showModal)}
         >
-          Add +
+          <MdOutlineNoteAdd size={24}/> Add
         </button>
       </div>
       {showModal && (
