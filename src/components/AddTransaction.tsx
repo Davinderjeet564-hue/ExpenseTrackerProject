@@ -99,7 +99,7 @@ function AddTransaction({ onClose, setTransaction, editingTransaction }: AddTran
                     id="description"
                     name="description"
                     className="input input-bordered w-full"
-                    placeholder="e.g. Groceries"
+                    placeholder="e.g. buy coffee"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   />
@@ -129,7 +129,7 @@ function AddTransaction({ onClose, setTransaction, editingTransaction }: AddTran
                   id="category"
                   name="category"
                   className="select select-bordered w-full"
-                  value={category}
+                  value={category || "Food"}
                   onChange={(e) => setCategory(e.target.value)}
                 >
                   <option value="">Select a category</option>
