@@ -4,9 +4,11 @@ import type { Expense } from '../App';
 
 interface ShowRecentTransactionsProps{
   expense:Expense[];
+  onDelete: (id: string) => void;
+  onEdit: (transaction: Expense) => void;
 }
 
-function ShowRecentTransactions({ expense }: ShowRecentTransactionsProps) {
+function ShowRecentTransactions({ expense, onDelete, onEdit }: ShowRecentTransactionsProps) {
   return (
     <div className="flex mt-2 p-4">
       <div className="flex-1">
@@ -19,8 +21,8 @@ function ShowRecentTransactions({ expense }: ShowRecentTransactionsProps) {
             <div className="card card-border bg-neutral/30 bg-base-100 w-96 flex">
                 <div key={transaction.id} className="card-body">
                     <div className="card-actions justify-end">
-                        <button className="btn bg-gray-900 hover:bg-gray-800 text-white rounded-full" ><FaEdit /></button>
-                        <button className="btn bg-gray-900 hover:bg-gray-800 text-white rounded-full" ><MdDeleteOutline /></button>
+                        <button className="btn bg-gray-900 hover:bg-gray-800 text-white rounded-full" onClick={() => onEdit(transaction)}><FaEdit /></button>
+                        <button className="btn bg-gray-900 hover:bg-gray-800 text-white rounded-full" onClick={() => onDelete(transaction.id)}><MdDeleteOutline /></button>
                     </div>
                     <div className="flex justify-between gap-4">
                         <div className="flex flex-col">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "./components/Header";
 import Stats from "./components/Stats";
 import SearchBar from "./components/SearchBar";
@@ -11,14 +11,14 @@ export interface Expense {
   amount: number;
   category: string;
   date: string;
-  type: "Expense"
+  type: "Expense";
 }
 
 export interface Income {
   id: string;
   amount: number;
   date: string;
-  type: "Income"
+  type: "Income";
 }
 
 export interface Transaction {
@@ -27,10 +27,14 @@ export interface Transaction {
 }
 
 function App() {
-  const [transactions, setTransactions] = React.useState<Transaction>({
-    expense: [],
-    income: [],
+  const [transactions, setTransactions] = React.useState<Transaction>(() => {
+    const stored = localStorage.getItem("transactions");
+    return stored ? JSON.parse(stored) : { expense: [], income: [] };
   });
+
+  useEffect(() => {
+    localStorage.setItem("transactions", JSON.stringify(transactions));
+  }, [transactions]);
 
   function addTransaction(transaction: Expense | Income) {
     if ("category" in transaction) {
@@ -46,23 +50,81 @@ function App() {
     }
   }
 
+  function deleteExpense(id: string) {
+    setTransactions((prev) => ({
+      ...prev,
+      expense: prev.expense.filter((item) => item.id !== id),
+    }));
+  }
+
+  function saveTransaction(transaction: Expense | Income) {
+    setTransactions((prev) => {
+      if ("category" in transaction) {
+        const exists = prev.expense.some((item) => item.id === transaction.id);
+        return {
+          ...prev,
+          expense: exists
+            ? prev.expense.map((item) => (item.id === transaction.id ? transaction : item))
+            : [...prev.expense, transaction],
+        };
+      } else {
+        const exists = prev.income.some((item) => item.id === transaction.id);
+        return {
+          ...prev,
+          income: exists
+            ? prev.income.map((item) => (item.id === transaction.id ? transaction : item))
+            : [...prev.income, transaction],
+        };
+      }
+    });
+    setShowModal(false);
+    setEditingExpense(null)
+  }
+
+
   const [showModal, setShowModal] = React.useState(false);
-  const [editingExpense,setEditingExpense] = React.useState<Expense | null>(null);
+  const [editingExpense, setEditingExpense] = React.useState<Expense | null>(
+    null,
+  );
 
   return (
     <>
       <Header />
       <div className="flex flex-row flex-wrap justify-evenly items-center m-4">
-        <Stats income={transactions.income.reduce((acc, curr) => acc + curr.amount, 0)} expense={transactions.expense.reduce((acc, curr) => acc + curr.amount, 0)} />
+        <Stats
+          income={transactions.income.reduce(
+            (acc, curr) => acc + curr.amount,
+            0,
+          )}
+          expense={transactions.expense.reduce(
+            (acc, curr) => acc + curr.amount,
+            0,
+          )}
+        />
         <SearchBar />
       </div>
       <div className="flex flex-row justify-center items-center m-4">
-        <button className="btn btn-outline btn-accent active:shadow-lg hover:shadow-lg focus:shadow-lg focus:outline-1 focus:outline-accent outline-offset-2 transition-all duration-200 ease-in-out" onClick={()=>setShowModal(!showModal)}>Add +</button>
+        <button
+          className="btn btn-outline btn-accent active:shadow-lg hover:shadow-lg focus:shadow-lg focus:outline-1 focus:outline-accent outline-offset-2 transition-all duration-200 ease-in-out"
+          onClick={() => setShowModal(!showModal)}
+        >
+          Add +
+        </button>
       </div>
       {showModal && (
-        <AddTransaction onClose={() => setShowModal(false)} setTransaction={addTransaction} />
+        <AddTransaction
+          onClose={() => setShowModal(false)}
+          setTransaction={addTransaction}
+        />
       )}
-      <RecentTransactions expense={transactions.expense} />
+      {editingExpense && (
+        <AddTransaction
+          onClose={() => setEditingExpense(null)}
+          setTransaction={saveTransaction}
+          editingTransaction={editingExpense}
+        />
+      )}
+      <RecentTransactions expense={transactions.expense} onDelete={deleteExpense} onEdit={setEditingExpense} />
     </>
   );
 }

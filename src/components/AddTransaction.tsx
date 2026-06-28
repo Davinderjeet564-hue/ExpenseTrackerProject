@@ -4,15 +4,16 @@ import type { Expense, Income } from "../App";
 interface AddTransactionProps {
   onClose: () => void;
   setTransaction: (transaction: Expense | Income) => void;
+  editingTransaction?: Expense | null; // Optional editing object
 }
 
-function AddTransaction({ onClose, setTransaction }: AddTransactionProps) {
-  const [type, setType] = useState<"income" | "expense" | null>("expense");
+function AddTransaction({ onClose, setTransaction, editingTransaction }: AddTransactionProps) {
+  const [type, setType] = useState<"income" | "expense" | null>(editingTransaction ? editingTransaction.type === "Expense" ? "expense" : "income" : "expense");
 
   // Controlled form state
-  const [description, setDescription] = useState("");
-  const [amount, setAmount] = useState("");
-  const [category, setCategory] = useState("");
+  const [description, setDescription] = useState(editingTransaction?.text || "");
+  const [amount, setAmount] = useState(editingTransaction?.amount.toString() || "");
+  const [category, setCategory] = useState(editingTransaction?.category || "");
   const [date] = useState(new Date().toISOString().split("T")[0]);
 
   const handleSubmit = (e: React.SubmitEvent) => {
@@ -21,7 +22,7 @@ function AddTransaction({ onClose, setTransaction }: AddTransactionProps) {
 
     if (type=="expense"){
       const expense: Expense = {
-        id:Date.now().toString(),
+        id: editingTransaction?.id || Date.now().toString(),
         text:description||"Untitled",
         amount:Number(amount)||0,
         category:category||"General",
@@ -31,7 +32,7 @@ function AddTransaction({ onClose, setTransaction }: AddTransactionProps) {
       setTransaction(expense);
     }else{
       const income: Income = {
-        id:Date.now().toString(),
+        id: editingTransaction?.id || Date.now().toString(),
         amount:Number(amount)||0,
         date:date,
         type:"Income",
@@ -92,6 +93,7 @@ function AddTransaction({ onClose, setTransaction }: AddTransactionProps) {
                     name="description"
                     className="input input-bordered w-full"
                     placeholder="e.g. Groceries"
+                    value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   />
                 </div>
@@ -107,6 +109,7 @@ function AddTransaction({ onClose, setTransaction }: AddTransactionProps) {
                   name="amount"
                   className="input input-bordered w-full"
                   placeholder="e.g. 50"
+                  value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                 />
               </div>
@@ -121,6 +124,7 @@ function AddTransaction({ onClose, setTransaction }: AddTransactionProps) {
                   name="category"
                   className="input input-bordered w-full"
                   placeholder="e.g. Groceries"
+                  value={category}
                   onChange={(e) => setCategory(e.target.value)}
                 />
               </div>
